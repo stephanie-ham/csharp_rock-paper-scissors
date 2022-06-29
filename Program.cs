@@ -46,21 +46,25 @@ void Main()
         "
     };
 
-
-
-
-    
     gameMenu(menuOptions);
 
-    int gameArtIndex = gameArt.Count - 1;
+    // -------- find index of player inputs -------- //
     int p1ArtIndex = playerOneInput() - 1;
-    int p2ArtIndex = playerTwoInput(gameArtIndex);
+    int p2ArtIndex = playerTwoInput(gameArt.Count) - 1;
 
-    gamePlay(gameArt[p1ArtIndex], gameArt[p2ArtIndex]);
+    // -------- runs gamePlay if user input is integer and exists in gameArt list -------- //
+    if(p1ArtIndex >= 0 && p1ArtIndex < 3 )
+    {
+        gamePlay(gameArt[p1ArtIndex], gameArt[p2ArtIndex]);
+    }
+    else
+    {
+        Console.WriteLine(errorMessage());
+    }
 
 }
 
-// -------- displays game menu in terminal -------- //
+// -------- displays game menu -------- //
 void gameMenu(List<string> playOptions)
 {
 
@@ -74,29 +78,7 @@ void gameMenu(List<string> playOptions)
     playOptions.ForEach(option => Console.WriteLine($"      {option}"));
 }
 
-
-// -------- old solution for playerOne input -------- //
-// static string playerOne(List<string> gameArt)
-// {
-//     var p1Input = Console.ReadLine();
-    
-//     if ((int.TryParse(p1Input, out int p1Num)) && (p1Num > 0 && p1Num <= 3)) 
-//     {
-//         string p1 = new string(gameArt[p1Num - 1]);
-        
-//         return p1;
-
-//     }
-//     else
-//     {
-//         return null;
-//     }
-
-// }
-
-
-
-// -------- displays game play in terminal -------- //
+// -------- displays game play -------- //
 void gamePlay(string p1, string p2)
 {
             Console.WriteLine($@"
@@ -130,32 +112,8 @@ void gamePlay(string p1, string p2)
 
 
 
-// --------- Potential solution for error message ---------- //
-// static string errorMessage()
-// {
-//     return "Please input a number 1-3.";
-// }
-// static string playerOneInput(int artIndex, string errorMsg)
-// {
-//     var p1Input = Console.ReadLine();
 
-//     int.TryParse(p1Input, out int p1InputToInt);
-
-//     if(p1InputToInt >= 0 && p1InputToInt <= artIndex){
-        
-//         string p1 = new string(p1Input);
-        
-//         return p1;
-//     }
-//     else
-//     {
-//         return errorMsg;
-//     }
-// }
-
-
-
-
+// --------- Returns selection for player 1  ---------- //
 static int playerOneInput()
 {
     var p1Input = Console.ReadLine();
@@ -165,25 +123,17 @@ static int playerOneInput()
     return p1InputToInt;
 }
 
-static int playerTwoInput(int artIndex)
+// --------- Returns selection for player 2  ---------- //
+static int playerTwoInput(int artCount)
 {
     Random randomInt = new Random();
-    int p2Random = randomInt.Next(0, artIndex + 1);
+    int p2Random = randomInt.Next(1, artCount);
 
     return p2Random;
 }
 
-// static string inputCheck(int p1Input, int artIndex)
-// {
-
-//     if(p1Input >= 0 && p1Input <= artIndex){
-        
-//         string p1 = new string(p1Input);
-        
-//         return p1;
-//     }
-//     else
-//     {
-//         return "Please input a number 1-3.";
-//     }
-// }
+// --------- Returns error message string ---------- //
+static string errorMessage()
+{
+    return "Please input a number 1-3.";
+}
